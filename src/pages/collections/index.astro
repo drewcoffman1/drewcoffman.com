@@ -1,0 +1,114 @@
+---
+import FormattedDate from "../../components/FormattedDate.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+import { SITE_TITLE } from "../../consts";
+import { getCollectionsWithImages } from "../../lib/postUtils.astro";
+
+const collections = await getCollectionsWithImages();
+---
+
+<BaseLayout
+  title={`Collections - ${SITE_TITLE}`}
+  description=`Collections by ${SITE_TITLE}`
+>
+ {
+    collections.length > 0 && (
+    <h1>Blog</h1>
+    <h2>Featured</h2>
+      <section>
+        <ul>
+          {collections.map((collection) => (
+            <li>
+              <a href={`${collection.name}/`}>
+                  <img src={collection.image} alt="" />
+              </a>
+              <a href={`${collection.name}/`}>
+                <h3 class="title">{collection.name}</h3>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+</BaseLayout>
+<style>
+  h1 {
+    margin-bottom: 2.25rem;
+    color: var(--theme-lilac);
+  }
+  h2 {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    color: var(--theme-light);
+  }
+  section {
+    margin-bottom: 4rem;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 2.5rem;
+    column-gap: 2rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      width: calc(50% - 1rem);
+
+      h3 {
+        font-weight: 600;
+        font-size: 1.5rem;
+        line-height: 2rem;
+        color: var(--theme-blue);
+        margin-top: 1.5rem;
+
+        &:hover {
+          color: var(--theme-lilac);
+        }
+      }
+      p,
+      p:hover {
+        color: var(--theme-text);
+        font-size: 1rem;
+        margin-top: 0.5rem;
+      }
+      * {
+        text-decoration: none;
+      }
+    }
+  }
+  @media (max-width: 480px) {
+
+      ul {
+        row-gap: 4rem;
+        li {
+          width: 100%;
+          flex-direction: column;
+
+          a {
+            max-width: 100%;
+
+            &:first-child {
+              width: 100%;
+            }
+          }
+
+          p {
+            margin-bottom: 0;
+          }
+        }
+      }
+    h3.title {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      margin-bottom: 0.5rem;
+      margin-top: 2rem;
+    }
+  }
+</style>

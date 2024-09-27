@@ -1,0 +1,105 @@
+---
+import FormattedDate from "./FormattedDate.astro";
+import PrevNext from "./PrevNext.astro";
+const {
+  title,
+  pubDate,
+  updatedDate,
+  heroImage,
+  showImage = true,
+  slug = "",
+  previous,
+  next,
+  collections,
+} = Astro.props;
+---
+
+<article>
+  <div class="title">
+    {
+      slug ? (
+        <a href={`/blog/${slug}`}>
+          <h1>{title}</h1>
+        </a>
+      ) : (
+        <h1>{title}</h1>
+      )
+    }
+  </div>
+  <div class="date">
+    <FormattedDate date={pubDate} />
+    {
+      updatedDate && (
+        <div class="last-updated-on">
+          Last updated on <FormattedDate date={updatedDate} />
+        </div>
+      )
+    }
+  </div>
+  {
+    showImage && (
+      <div class="hero-image">
+        {heroImage && <img src={heroImage} alt="" />}
+      </div>
+    )
+  }
+
+  <div class="content">
+    <slot />
+  </div>
+</article>
+{
+  collections && (
+    <div class="collections">
+      <h3>COLLECTIONS</h3>
+      <ul>
+        {collections.map((collection: string, index: number) => (
+          <>
+            <a href={`/collections/${collection}`}>{collection}</a>
+            {index < collections.length - 1 && ",\u00A0"}
+          </>
+        ))}
+      </ul>
+    </div>
+  )
+}
+<PrevNext previous={previous} next={next} />
+<style>
+  .hero-image {
+    width: 100%;
+  }
+  .hero-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 2.25rem auto;
+  }
+
+  .content {
+    text-align: left;
+    margin-bottom: 4.5rem;
+  }
+  .title {
+    line-height: 1;
+  }
+  .title h1 {
+    margin-bottom: 0.75rem;
+  }
+  .date {
+    margin-bottom: 2rem;
+    color: rgb(var(--theme-blue));
+  }
+  .last-updated-on {
+    font-style: italic;
+  }
+  @media (max-width: 680px) {
+    article {
+      margin-bottom: 1rem;
+    }
+  }
+  @media (max-width: 400px) {
+    article {
+      padding-top: 0;
+    }
+  }
+</style>

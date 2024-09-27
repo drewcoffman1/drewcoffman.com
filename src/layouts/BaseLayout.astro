@@ -1,0 +1,95 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+const { title, description, image = "/img/waveform.png" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} image={image} />
+  </head>
+  <body>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <!-- Theme toggle script -->
+    <script>
+      const themeToggleButton = document.getElementById("theme-toggle");
+      let currentTheme = localStorage.getItem("theme");
+
+      if (currentTheme === "dark") {
+        document.body.classList.add("night-theme");
+      } else if (currentTheme === "light") {
+        document.body.classList.remove("night-theme");
+      } else if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.body.classList.add("night-theme");
+      }
+
+      themeToggleButton?.addEventListener("click", () => {
+        if (document.body.classList.contains("night-theme")) {
+          document.body.classList.remove("night-theme");
+          localStorage.setItem("theme", "light");
+        } else {
+          document.body.classList.add("night-theme");
+          localStorage.setItem("theme", "dark");
+        }
+      });
+    </script>
+    <!-- replace page content with mobile menu, vice versa -->
+    <script is:inline type="text/javascript">
+      function menuToggle() {
+        var closeIcon = document.getElementById("close-icon");
+        console.log("closeIcon", closeIcon);
+        var hamburgerIcon = document.getElementById("hamburger-icon");
+        var menu = document.getElementById("mobile-nav");
+        const body = document.body;
+        const main = document.getElementById("main");
+        console.log("main", main);
+
+        if (menu.style.display === "block") {
+          // Close the menu, show the hamburger icon
+          menu.style.display = "none";
+          body.classList.remove("no-scroll"); // Enable scrolling
+          closeIcon.style.display = "none";
+          hamburgerIcon.style.display = "block";
+          main.style.display = "block";
+        } else {
+          // Open the menu, show the close icon
+          menu.style.display = "block";
+          body.classList.add("no-scroll"); //disable scrolling
+          main.style.display = "none";
+          closeIcon.style.display = "block";
+          hamburgerIcon.style.display = "none";
+        }
+      }
+    </script>
+    <!-- if mobile menu is open and resize to desktop, kill menu and restore page contents -->
+    <script is:inline type="text/javascript">
+      function handleResize() {
+        const width = window.innerWidth; // Get the current viewport width
+        const mobileWidthThreshold = 768; // Set the threshold width
+        var menu = document.getElementById("mobile-nav");
+
+        if (width > mobileWidthThreshold && menu.style.display === "block") {
+          menuToggle();
+        }
+      }
+      // Add the resize event listener to the window
+      window.addEventListener("resize", handleResize);
+    </script>
+  </body>
+</html>

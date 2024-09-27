@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE } from "../consts";
+import { Content as AboutPageContent } from "../content/static/About-Page-Content.md";
+---
+
+<BaseLayout
+  title={`About - ${SITE_TITLE}`}
+  description=`More information about ${SITE_TITLE}`
+>
+  <h1>About</h1>
+  <article>
+    <AboutPageContent />
+  </article>
+</BaseLayout>

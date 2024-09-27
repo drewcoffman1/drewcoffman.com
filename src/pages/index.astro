@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import { Content as HomePageContent } from "../content/static/Home-Page-Content.md";
+import { getFeaturedPosts } from "../lib/postUtils.astro";
+
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+const featuredWorks = await getFeaturedPosts();
+---
+
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <article>
+    <HomePageContent />
+  </article>
+  {
+    featuredWorks.length > 0 && (
+      <>
+        <h2>Featured Works:</h2>
+        <ul>
+          {featuredWorks.map((work) => (
+            <li>
+              <a href={`/${work.collection}/${work.slug}/`}>
+                <img
+                  src={work.data.thumbnailImage}
+                  alt=""
+                />
+
+                <h3 class="title">{work.data.title}</h3>
+                <p class="date">
+                  <FormattedDate date={work.data.pubDate} />
+                </p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+</BaseLayout>
+<style>
+  ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: 0;
+
+      * {
+        text-decoration: none;
+        transition: 0.2s ease;
+      }
+      a {
+        display: block;
+      }
+      h3 {
+        font-weight: 600;
+        font-size: 1.5rem;
+        line-height: 2rem;
+        color: var(--theme-blue);
+        margin-top: 1.5rem;
+
+        &:hover {
+          color: var(--theme-lilac);
+        }
+      }
+    }
+  }
+
+
+  @media (max-width: 480px) {
+
+      ul {
+        grid-template-columns: 1fr;
+        row-gap: 4rem;
+        li {
+          width: 100%;
+          flex-direction: column;
+
+          a {
+            max-width: 100%;
+
+            &:first-child {
+              width: 100%;
+            }
+          }
+
+          p {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+</style>

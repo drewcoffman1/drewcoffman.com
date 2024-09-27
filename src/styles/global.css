@@ -1,0 +1,398 @@
+:root {
+  --medium-blue: #2856c2;
+  --dark-lilac: #8c188e;
+  --cream: #fff8f3;
+  --navy: #001548;
+  --blue: #7ea4ff;
+  --lilac: #e874dd;
+  --pale-lilac: #fbe8ff;
+  --dark-cream: #eaded6;
+  --light-navy: #374973;
+
+  /* Day theme */
+  --theme-blue: var(--medium-blue);
+  --theme-lilac: var(--dark-lilac);
+  --theme-background: var(--cream);
+  --theme-text: var(--navy);
+  --theme-light: var(--lilac);
+  --theme-border: var(--dark-cream);
+}
+
+.night-theme {
+  --theme-blue: var(--blue);
+  --theme-lilac: var(--lilac);
+  --theme-background: var(--navy);
+  --theme-text: var(--pale-lilac);
+  --theme-light: var(--blue);
+  --theme-border: var(--light-navy);
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-SemiBoldItalic.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic;
+}
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.125rem;
+  text-align: left;
+  animation: colorShift 60s infinite linear;
+  background-size: 100% 600px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  background-color: var(--theme-background);
+  color: var(--theme-text);
+  line-height: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100vw;
+  overflow-x: hidden;
+  min-height: 100vh;
+  margin: 0;
+  padding: 40px;
+  width: 100%;
+}
+main {
+  max-width: 780px;
+  flex-grow: 1;
+  width: 100%;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 2.25rem;
+  line-height: 2.75rem;
+  margin-bottom: 2.25rem;
+  color: var(--theme-blue);
+}
+h2 {
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 2.25rem;
+  margin-top: 3rem;
+  margin-bottom: 0.75rem;
+  color: var(--theme-lilac);
+}
+h3 {
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--theme-lilac);
+}
+h4 {
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--theme-lilac);
+}
+h5 {
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  margin-bottom: 0.5rem;
+  margin-top: 2rem;
+  color: var(--theme-lilac);
+}
+h6 {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  line-height: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--theme-lilac);
+}
+strong,
+b {
+  font-weight: 700;
+}
+a {
+  color: var(--theme-blue);
+}
+a:hover {
+  color: var(--theme-lilac);
+}
+p {
+  margin-bottom: 0.75em;
+}
+.prose p {
+  margin-bottom: 2em;
+}
+textarea {
+  width: 100%;
+  font-size: 16px;
+}
+input {
+  font-size: 16px;
+}
+table {
+  width: 100%;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+code {
+  padding: 2px 5px;
+  background-color: rgb(var(--gray-light));
+  border-radius: 2px;
+}
+pre {
+  padding: 1.5em;
+  border-radius: 8px;
+}
+pre > code {
+  all: unset;
+}
+blockquote {
+  border-left: 4px solid var(--theme-blue);
+  padding-left: 1.5rem;
+  line-height: 1.75rem;
+  font-size: 1.25rem;
+  margin: 2.25rem 0;
+  font-weight: 300;
+  font-style: italic;
+}
+time {
+  color: var(--theme-blue);
+}
+hr {
+  border: none;
+  border-top: 1px solid var(--theme-blue);
+  margin: 4rem 0;
+}
+ul {
+  list-style: none;
+}
+
+/* Special rules for inline text */
+article,
+.formatted {
+  a {
+    color: var(--theme-blue);
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--theme-blue);
+      text-decoration-style: dotted;
+    }
+  }
+
+  /* Basic reset for list style */
+  ul,
+  ol {
+    list-style: none; /* Remove default bullets/numbers */
+    padding-left: 0; /* Remove default padding */
+    margin: 0 0 0.75rem 0; /* Same as paragraph spacing */
+  }
+
+  ul li,
+  ol li {
+    position: relative;
+    padding-left: 2.5rem; /* 1.25rem before the bullet + 1.25rem between the bullet and the content */
+    margin: 0 0 0.75rem 0; /* 0.75rem between items */
+  }
+
+  ul li::before,
+  ol li::before {
+    content: "\2022"; /* Bullet character for ul, you can change this to counters for ol */
+    position: absolute;
+    left: 0;
+    width: 1.25rem; /* Space before the bullet */
+    text-align: center; /* Center the bullet */
+    display: inline-block;
+  }
+
+  ol li {
+    counter-increment: list-counter;
+  }
+
+  ol li::before {
+    content: counter(list-counter) "."; /* Number character for ol */
+  }
+
+  li li:first-child {
+    margin-top: 0.75rem;
+  }
+}
+
+.no-bullet {
+  li::before {
+    content: none;
+  }
+}
+
+.collections {
+  border: 1px solid var(--theme-border);
+  border-radius: 2px;
+  padding: 1.25rem 2rem;
+  margin-bottom: 4.5rem;
+
+  h3 {
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1.5rem;
+    color: var(--theme-navy);
+    margin-top: 0;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+
+    a {
+      color: var(--theme-blue);
+      text-decoration: underline;
+
+      &:hover {
+        color: var(--theme-blue);
+        text-decoration-style: dotted;
+      }
+    }
+  }
+}
+
+.no-scroll {
+  overflow: hidden;
+  position: fixed; /* Keep the body position fixed to prevent scrolling */
+  max-width: 100%; /* Prevent horizontal scrollbar */
+}
+
+.desktop-only {
+  display: block;
+}
+
+.mobile-only {
+  display: none;
+}
+
+.sr-only {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  /* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
+  clip: rect(1px 1px 1px 1px);
+  /* maybe deprecated but we need to support legacy browsers */
+  clip: rect(1px, 1px, 1px, 1px);
+  /* modern browsers, clip-path works inwards from each corner */
+  clip-path: inset(50%);
+  /* added line to stop words getting smushed together (as they go onto seperate lines and some screen readers do not understand line feeds as a space */
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 20px;
+  }
+}
+
+@media (min-width: 1028px) {
+  .extra-wide {
+    position: relative;
+    max-width: none;
+    width: 100vw; /* Full viewport width */
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw; /* Align to the left edge of the viewport */
+    padding-left: 124px;
+    padding-right: 124px;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 1278px) {
+  .extra-wide {
+    width: 1030px;
+    padding: 0;
+    left: 50%; /* Start from the center of the viewport */
+    margin-left: -515px;
+  }
+}
+
+@media (max-width: 860px) {
+  .primary-featured {
+    h3 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+    p,
+    p:hover {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 760px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+  html {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,271 @@
+---
+import FormattedDate from "../../components/FormattedDate.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+import { SITE_TITLE } from "../../consts";
+import { getBlogPosts } from "../../lib/postUtils.astro";
+
+const blogPosts = await getBlogPosts();
+
+const featuredBlogPosts = blogPosts.filter(
+  (blogPost) => blogPost.data.featured
+);
+const firstFeaturedBlogPost =
+  featuredBlogPosts.length > 0 ? featuredBlogPosts[0] : null;
+const remainingBlogPosts =
+  featuredBlogPosts.length > 1 ? featuredBlogPosts.slice(1) : [];
+---
+
+<BaseLayout
+  title={`Blog Posts - ${SITE_TITLE}`}
+  description=`Blog posts by ${SITE_TITLE}`
+>
+  {
+    featuredBlogPosts.length > 0 && (
+      <section class="primary">
+        <h1 class="extra-wide">Blog Posts</h1>
+        <h2 class="extra-wide">Featured</h2>
+        <ul>
+          <li class="primary-featured extra-wide">
+            <a
+              href={`/${firstFeaturedBlogPost!.collection}/${firstFeaturedBlogPost!.slug}/`}
+            >
+              <img src={firstFeaturedBlogPost!.data.thumbnailImage} alt="" />
+            </a>
+            <a
+              href={`/${firstFeaturedBlogPost!.collection}/${firstFeaturedBlogPost!.slug}/`}
+            >
+              <h3 class="title">{firstFeaturedBlogPost!.data.title}</h3>
+              {firstFeaturedBlogPost!.data.excerpt && (
+                <p>{firstFeaturedBlogPost!.data.excerpt}</p>
+              )}
+            </a>
+          </li>
+        </ul>
+      </section>
+    )
+  }
+  {
+    featuredBlogPosts.length > 1 && (
+      <section class="featured-blog-posts">
+        <ul>
+          {remainingBlogPosts.map((blogPost) => (
+            <li>
+              <a href={`/${blogPost.collection}/${blogPost.slug}/`}>
+                {blogPost.data.thumbnailImage && (
+                  <img src={blogPost.data.thumbnailImage} alt="" />
+                )}
+              </a>
+              <a href={`/${blogPost.collection}/${blogPost.slug}/`}>
+                <h3 class="title">{blogPost.data.title}</h3>
+                {blogPost.data.excerpt && <p>{blogPost.data.excerpt}</p>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  <section class="more-blog-posts">
+    <h2>More BlogPosts</h2>
+    <ul>
+      {
+        blogPosts.map((blogPost) => (
+          <li>
+            <a href={`/${blogPost.collection}/${blogPost.slug}/`}>
+              {blogPost.data.thumbnailImage && (
+                <img src={blogPost.data.thumbnailImage} alt="" />
+              )}
+            </a>
+            <a href={`/${blogPost.collection}/${blogPost.slug}/`}>
+              <h3 class="title">{blogPost.data.title}</h3>
+              <p class="date">
+                <FormattedDate date={blogPost.data.pubDate} />
+              </p>
+              {blogPost.data.excerpt && <p>{blogPost.data.excerpt}</p>}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+<style>
+  h1 {
+    margin-bottom: 2.25rem;
+    color: var(--theme-lilac);
+  }
+  h2 {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    color: var(--theme-light);
+  }
+  section {
+    margin-bottom: 4rem;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 2.5rem;
+    column-gap: 2rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      width: calc(50% - 1rem);
+
+      h3 {
+        font-weight: 600;
+        font-size: 1.5rem;
+        line-height: 2rem;
+        color: var(--theme-blue);
+        margin-top: 1.5rem;
+
+        &:hover {
+          color: var(--theme-lilac);
+        }
+      }
+      p,
+      p:hover {
+        color: var(--theme-text);
+        font-size: 1rem;
+        margin-top: 0.5rem;
+      }
+      * {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .primary-featured {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    width: 100%;
+    h3 {
+      margin-top: 0;
+      font-size: 2rem;
+    }
+    p,
+    p:hover {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+    }
+
+    a {
+      display: block;
+      max-width: 50%;
+      width: 100%;
+
+      &:nth-child(2) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+      }
+    }
+  }
+
+  .date {
+    margin: 0;
+    margin-bottom: 1rem;
+    line-height: 0.75rem;
+    time {
+      color: rgb(var(--theme-text));
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+  }
+  .more-blog-posts {
+    h2 {
+      color: var(--theme-lilac);
+      font-size: 1.75rem;
+      line-height: 2.25rem;
+      font-weight: 700;
+      text-transform: none;
+      margin-top: 5.75rem;
+    }
+
+    li {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      column-gap: 1.5rem;
+
+      h3 {
+        margin-top: 0;
+      }
+
+      a:first-child {
+        min-width: 25%;
+        width: 25%;
+      }
+    }
+  }
+
+  @media (min-width: 1028px) {
+    .extra-wide {
+      position: relative;
+      max-width: none;
+      width: 100vw; /* Full viewport width */
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw; /* Align to the left edge of the viewport */
+      padding-left: 124px;
+      padding-right: 124px;
+      box-sizing: border-box;
+    }
+  }
+
+  @media (min-width: 1278px) {
+    .extra-wide {
+      width: 1030px;
+      padding: 0;
+      left: 50%; /* Start from the center of the viewport */
+      margin-left: -515px;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .more-blogPosts {
+      a:nth-child(2) {
+        margin-top: 1rem;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .primary,
+    .featured-blog-posts,
+    .more-blog-posts {
+      ul {
+        li {
+          width: 100%;
+          flex-direction: column;
+
+          a {
+            max-width: 100%;
+
+            &:first-child {
+              width: 100%;
+            }
+          }
+
+          p {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+    .primary-featured h3,
+    h3 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+</style>

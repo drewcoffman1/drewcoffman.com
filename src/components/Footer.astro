@@ -1,0 +1,26 @@
+---
+const today = new Date();
+import { Content as FooterContent } from "../content/static/Footer-Content.md";
+---
+
+<footer class="formatted">
+  <FooterContent />
+  <button id="theme-toggle">Toggle Theme</button>
+</footer>
+<style>
+  footer {
+    padding: 2em 0 4em;
+    color: rgb(var(--gray));
+    text-align: right;
+    width: 100%;
+    max-width: 780px;
+    font-size: 0.75rem;
+    font-style: italic;
+
+    a {
+      font-size: 1rem;
+      font-style: normal;
+      color: var(--theme-text);
+    }
+  }
+</style>

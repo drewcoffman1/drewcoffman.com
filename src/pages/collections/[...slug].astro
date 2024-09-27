@@ -1,0 +1,116 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollections, getAllPosts } from "../../lib/postUtils.astro";
+import { SITE_TITLE } from "../../consts";
+export async function getStaticPaths() {
+  const collections = await getCollections();
+  return collections.map((collection) => ({
+    params: { slug: collection },
+    props: { collection },
+  }));
+}
+
+const { collection } = Astro.props;
+
+const allPosts = await getAllPosts();
+const filteredContent = allPosts.filter(
+  (item: any) =>
+    item.data.collections?.includes(collection) && item.data.published !== false
+);
+---
+
+<BaseLayout
+  title={`${collection} Collection - Tolometry`}
+  description={`Items in the ${collection} collection by ${SITE_TITLE}`}
+>
+  <h1>{collection}</h1>
+  {
+    filteredContent.length > 0 && (
+      <section>
+        <ul>
+          {filteredContent.map((item) => (
+            <li>
+              <a href={`/${item.collection}/${item.slug}/`}>
+                {item.data.thumbnailImage && (
+                  <img src={item.data.thumbnailImage} alt="" />
+                )}
+              </a>
+              <a href={`/${item.collection}/${item.slug}/`}>
+                <h3 class="title">{item.data.title}</h3>
+                {item.data.excerpt && <p>{item.data.excerpt}</p>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  {filteredContent.length === 0 && <p>No items found in this collection.</p>}
+</BaseLayout>
+
+<style>
+  h1 {
+    margin-bottom: 2.25rem;
+    color: var(--theme-lilac);
+  }
+  section {
+    margin-bottom: 4rem;
+  }
+  ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 2rem;
+    row-gap: 2.5rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  h3 {
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    color: var(--theme-blue);
+    margin-top: 1.5rem;
+  }
+  h3:hover {
+    color: var(--theme-lilac);
+  }
+  p,
+  p:hover {
+    color: var(--theme-text);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+  a {
+    text-decoration: none;
+  }
+
+  @media (max-width: 480px) {
+    ul {
+      grid-template-columns: 1fr;
+      row-gap: 4rem;
+      li {
+        width: 100%;
+        flex-direction: column;
+
+        a {
+          max-width: 100%;
+
+          &:first-child {
+            width: 100%;
+          }
+        }
+
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+    h3.title {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      margin-bottom: 0.5rem;
+      margin-top: 2rem;
+    }
+  }
+</style>

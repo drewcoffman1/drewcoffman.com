@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+
+export async function getBlogPosts() {
+  const allBlogPosts = (await getCollection("blog"))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .filter((blogPost) => blogPost.data.published);
+  if (allBlogPosts.length > 0) {
+    // Add a link to the next blog post in each blog post
+    allBlogPosts.forEach((blogPost, index, array) => {
+      blogPost.data.previous =
+        index < allBlogPosts.length - 1
+          ? getPostData(array[index + 1])
+          : undefined;
+      blogPost.data.next = index > 0 ? getPostData(array[index - 1]) : undefined;
+    });
+  }
+  return allBlogPosts;
+}
+
+export async function getAllPosts() {
+  return await getBlogPosts();
+}
+
+export async function getFeaturedPosts() {
+  return (await getBlogPosts()).filter((post) => post.data.featured);
+}
+
+export function getPostData(post: any) {
+  return {
+    slug: `/${post.collection}/${post.slug}`,
+    title: post.data.title,
+  };
+}
+
+export async function getCollections(): Promise<string[]> {
+  const allCollections = new Set<string>();
+  const allContent = await getAllPosts();
+
+  allContent.forEach((item) => {
+    item.data.collections?.forEach((collection: any) =>
+      allCollections.add(collection)
+    );
+  });
+
+  return Array.from(allCollections);
+}
+
+export async function getCollectionsData(collectionName: string) {
+  const allContent = await getAllPosts();
+
+  return allContent.filter(
+    (item) =>
+      item.data.collections?.includes(collectionName) &&
+      item.data.published !== false
+  );
+}
+
+export async function getCollectionsWithImages() {
+  const collections = await getCollections();
+  const collectionsWithImages = await Promise.all(
+    collections.map(async (collectionName) => {
+      const collectionData = await getCollectionsData(collectionName);
+      const itemsWithThumbnails = collectionData.filter(
+        (item) => item.data.thumbnailImage
+      );
+
+      let randomThumbnail = null;
+      if (itemsWithThumbnails.length > 0) {
+        const randomIndex = Math.floor(
+          Math.random() * itemsWithThumbnails.length
+        );
+        randomThumbnail = itemsWithThumbnails[randomIndex].data.thumbnailImage;
+      }
+
+      return {
+        name: collectionName,
+        image: randomThumbnail,
+      };
+    })
+  );
+
+  return collectionsWithImages;
+}
+---
