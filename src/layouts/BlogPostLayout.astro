@@ -5,7 +5,7 @@ import BlogPost from "../components/BlogPost.astro";
 
 type Props = CollectionEntry<"blog">["data"];
 
-const { data: blogPost } = Astro.props;
+const blogPost = Astro.props;
 const {
   title,
   excerpt = "A wonderful blog post by Tiger Pajamas",
